@@ -16,7 +16,7 @@ class Monster extends Model
     ];
 
     public function race(){
-        return null;
+        return $this->hasOne(MonsterRace::class, 'monster_race_id');
     }
 
     public function abilities(){
