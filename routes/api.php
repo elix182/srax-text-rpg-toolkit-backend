@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'hero'], function () {
     Route::get('', 'HeroController@list');
     Route::get('random', 'HeroController@random');
+    Route::get('{id}', 'HeroController@find');
   
     Route::middleware('auth:api')->group(function () {
     });

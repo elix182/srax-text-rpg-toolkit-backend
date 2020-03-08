@@ -64,6 +64,14 @@ class HeroController extends Controller
         return response()->json($response);
     }
 
+    public function find(Int $id){
+        $hero = Hero::find($id);
+        if($hero == null){
+            return response()->json(['message'=>"Hero not found with id $id"]);
+        }
+        return response()->json($hero);
+    }
+
     public function edit(Int $id, Request $request){
 
     }
