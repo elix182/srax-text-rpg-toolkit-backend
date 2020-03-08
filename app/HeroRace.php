@@ -11,4 +11,7 @@ class HeroRace extends Model
     ];
 
     // available classes
+    public function availableClasses(){
+        return $this->hasMany(HeroClass::class);
+    }
 }

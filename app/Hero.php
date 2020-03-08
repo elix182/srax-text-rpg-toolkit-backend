@@ -16,4 +16,8 @@ class Hero extends Model
         return $this->hasOne(HeroRace::class, 'hero_race_id');
     }
 
+    public function heroClass(){
+        return $this->hasOne(HeroClass::class, 'hero_class_id');
+    }
+
 }
