@@ -11,6 +11,6 @@ class HeroClass extends Model
     ];
 
     public function availableWeapons(){
-        return $this->hasMany(Weapon::class);
+        return $this->belongsToMany(Weapon::class);
     }
 }

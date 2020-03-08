@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHeroClassesWeaponsTable extends Migration
+class CreateHeroClassWeaponTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateHeroClassesWeaponsTable extends Migration
      */
     public function up()
     {
-        Schema::create('hero_classes_weapons', function (Blueprint $table) {
+        Schema::create('hero_class_weapon', function (Blueprint $table) {
             $table->unsignedBigInteger('hero_class_id');
             $table->unsignedBigInteger('weapon_id');
             $table->foreign('hero_class_id')
@@ -32,6 +32,6 @@ class CreateHeroClassesWeaponsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hero_classes_weapons');
+        Schema::dropIfExists('hero_class_weapon');
     }
 }
