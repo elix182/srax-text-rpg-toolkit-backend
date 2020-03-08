@@ -28,4 +28,4 @@ Route::group(['prefix' => 'hero'], function () {
   
     Route::middleware('auth:api')->group(function () {
     });
-  });
+});
