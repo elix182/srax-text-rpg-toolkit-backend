@@ -17,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'hero'], function () {
+    Route::get('', 'HeroController@list');
+    Route::get('random', 'HeroController@random');
+    Route::get('{id}', 'HeroController@find');
+    Route::post('', 'HeroController@create');
+    Route::delete('{id}', 'HeroController@delete');
+    Route::put('{id}', 'HeroController@edit');
+  
+    Route::middleware('auth:api')->group(function () {
+    });
+  });
