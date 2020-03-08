@@ -20,6 +20,6 @@ class Monster extends Model
     }
 
     public function abilities(){
-        return null;
+        return $this->belongsToMany(MonsterAbility::class);
     }
 }

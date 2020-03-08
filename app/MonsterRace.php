@@ -11,6 +11,6 @@ class MonsterRace extends Model
     ];
 
     public function availableAbilities(){
-        return null;
+        return $this->belongsToMany(MonsterAbility::class);
     }
 }
