@@ -143,6 +143,12 @@ class HeroController extends Controller
     }
 
     public function delete(Int $id){
-
+        $hero = Hero::find($id);
+        if($hero == null){
+            return response()->json(['message'=>"Hero not found with id $id"], 404);
+        }
+        $hero->delete();
+        $name = trim("$hero->firstName $hero->lastName");
+        return response()->json(["message" => "Hero $name deleted successfully"]);
     }
 }

@@ -23,6 +23,7 @@ Route::group(['prefix' => 'hero'], function () {
     Route::get('random', 'HeroController@random');
     Route::get('{id}', 'HeroController@find');
     Route::post('', 'HeroController@create');
+    Route::delete('{id}', 'HeroController@delete');
   
     Route::middleware('auth:api')->group(function () {
     });
