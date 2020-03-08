@@ -24,6 +24,7 @@ Route::group(['prefix' => 'hero'], function () {
     Route::get('{id}', 'HeroController@find');
     Route::post('', 'HeroController@create');
     Route::delete('{id}', 'HeroController@delete');
+    Route::put('{id}', 'HeroController@edit');
   
     Route::middleware('auth:api')->group(function () {
     });
