@@ -20,4 +20,7 @@ class Hero extends Model
         return $this->hasOne(HeroClass::class, 'hero_class_id');
     }
 
+    public function weapon(){
+        return $this->hasOne(Weapon::class, 'weapon_id');
+    }
 }

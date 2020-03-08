@@ -9,4 +9,8 @@ class HeroClass extends Model
     protected $fillable = [
         'name', 'description' //, 'skills'
     ];
+
+    public function availableWeapons(){
+        return $this->hasMany(Weapon::class);
+    }
 }
