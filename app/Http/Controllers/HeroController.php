@@ -37,11 +37,11 @@ class HeroController extends Controller
                 $lastName = '';
                 break;
             case 'Elf':
-                $lastName = strrev($firstName);
+                $lastName = ucfirst(strtolower(strrev($firstName)));
             break;
             case 'Dwarf':
                 while(!strpos(strtoupper($lastName), 'R') || !strpos(strtoupper($lastName), 'H')){
-                    $lastNameIndex = rand(0, count($firstNames)-1);
+                    $lastNameIndex = rand(0, count($lastNames)-1);
                     $lastName = $lastNames[$lastNameIndex];
                 }
                 break;
