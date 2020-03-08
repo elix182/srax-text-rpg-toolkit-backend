@@ -22,6 +22,7 @@ Route::group(['prefix' => 'hero'], function () {
     Route::get('', 'HeroController@list');
     Route::get('random', 'HeroController@random');
     Route::get('{id}', 'HeroController@find');
+    Route::post('', 'HeroController@create');
   
     Route::middleware('auth:api')->group(function () {
     });

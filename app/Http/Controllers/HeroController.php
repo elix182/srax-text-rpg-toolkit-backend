@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Hero;
 use App\HeroRace;
 use App\HeroClass;
+use App\Weapon;
 
 class HeroController extends Controller
 {
@@ -19,7 +21,67 @@ class HeroController extends Controller
     }
 
     public function create(Request $request){
+        //Validate the request
+        $validator = Validator::make($request->all(),
+        [
+            'firstName' => 'required|string',
+            'raceId' => 'required|integer',
+            'classId' => 'required|integer',
+            'weaponId' => 'required|integer',
+            'str' => 'required|integer',
+            'dex' => 'required|integer',
+            'int' => 'required|integer',
+        ]);
+        if($validator->fails()){
+            return response()->json(["message" => "The hero request lacks data"], 400);
+        }
+        //Check if the selected data exists
+        $race = HeroRace::find($request->raceId);
+        if($race == null){
+            return response()->json(["message" => "Hero Race not found"], 404);
+        }
+        $class = HeroClass::find($request->classId);
+        if($class == null){
+            return response()->json(["message" => "Hero Class not found"], 404);
+        }
+        $weapon = Weapon::find($request->weaponId);
+        if($weapon == null){
+            return response()->json(["message" => "Weapon not found"], 404);
+        }
+        //Now let's see if the data is compatible
+        if($race->availableClasses()->find($class->id) == null){
+            return response()->json(["message" => "A $race->name can't be a $class->name"], 400);
+        }
+        if($class->availableWeapons()->find($weapon->id) == null){
+            return response()->json(["message" => "A $class->name can't use a $weapon->name"], 400);
+        }
+        //Finally check if the data is valid
+        if($request->str <= 0 && $request->str > 100){
+            return response()->json(["message" => "STR can't be lower than or equal to 9 or grater than 100"], 400);
+        }
+        if($request->dex <= 0 && $request->dex > 100){
+            return response()->json(["message" => "DEX can't be lower than or equal to 9 or grater than 100"], 400);
+        }
+        if($request->int <= 0 && $request->int > 100){
+            return response()->json(["message" => "INT can't be lower than or equal to 9 or grater than 100"], 400);
+        }
+        //Actual creation of the hero with initial state
+        $hero = new Hero();
+        $hero->firstName = $request->firstName;
+        $hero->lastName = $request->lastName;
+        $hero->str = $request->str;
+        $hero->dex = $request->dex;
+        $hero->int = $request->int;
+        $hero->hero_race_id = $race->id;
+        $hero->hero_class_id = $class->id;
+        $hero->weapon_id = $weapon->id;
+        $hero->level = 1;
+        $hero->exp = 0;
+        $hero->active = true;
+        $hero->save();
 
+        $name = trim("$hero->firstName $hero->lastName");
+        return response()->json(["message" => "Hero $name created successfully"]);
     }
 
     public function random(){
@@ -67,7 +129,7 @@ class HeroController extends Controller
     public function find(Int $id){
         $hero = Hero::find($id);
         if($hero == null){
-            return response()->json(['message'=>"Hero not found with id $id"]);
+            return response()->json(['message'=>"Hero not found with id $id"], 404);
         }
         return response()->json($hero);
     }
