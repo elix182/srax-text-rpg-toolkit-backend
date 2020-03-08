@@ -56,14 +56,14 @@ class HeroController extends Controller
             return response()->json(["message" => "A $class->name can't use a $weapon->name"], 400);
         }
         //Finally check if the data is valid
-        if($request->str <= 0 && $request->str > 100){
-            return response()->json(["message" => "STR can't be lower than or equal to 9 or grater than 100"], 400);
+        if($request->str <= 0 || $request->str > 100){
+            return response()->json(["message" => "STR cannot be lower or equal than 0 or greater than 100"], 400);
         }
-        if($request->dex <= 0 && $request->dex > 100){
-            return response()->json(["message" => "DEX can't be lower than or equal to 9 or grater than 100"], 400);
+        if($request->dex <= 0 || $request->dex > 100){
+            return response()->json(["message" => "DEX cannot be lower or equal than 0 or greater than 100"], 400);
         }
-        if($request->int <= 0 && $request->int > 100){
-            return response()->json(["message" => "INT can't be lower than or equal to 9 or grater than 100"], 400);
+        if($request->int <= 0 || $request->int > 100){
+            return response()->json(["message" => "INT cannot be lower or equal than 0 or greater than 100"], 400);
         }
         //Actual creation of the hero with initial state
         $hero = new Hero();
@@ -135,10 +135,6 @@ class HeroController extends Controller
     }
 
     public function edit(Int $id, Request $request){
-
-    }
-
-    public function disable(Int $id){
 
     }
 
