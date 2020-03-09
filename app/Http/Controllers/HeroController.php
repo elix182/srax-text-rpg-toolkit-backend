@@ -172,7 +172,7 @@ class HeroController extends Controller
         if($hero == null){
             return response()->json(['message'=>"Hero not found with id $id"], 404);
         }
-        return response()->json($hero->with('race')->with('heroClass')->with('weapon')->get());
+        return response()->json($hero->with('race')->with('heroClass')->with('weapon')->find($id));
     }
 
     public function edit(Int $id, Request $request){

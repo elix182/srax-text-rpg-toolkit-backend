@@ -73,7 +73,7 @@ class MonsterController extends Controller
         if($monster == null){
             return response()->json(['message'=>"Monster not found with id $id"], 404);
         }
-        return response()->json($monster->with('race')->with('abilities')->get());
+        return response()->json($monster->with('race')->with('abilities')->find($id));
     }
 
     public function create(Request $request){
