@@ -31,6 +31,20 @@ Route::group(['prefix' => 'hero'], function () {
     });
 });
 
+Route::group(['prefix' => 'herorace'], function () {
+    Route::get('', 'HeroRaceController@list');
+});
+
+Route::group(['prefix' => 'heroclass'], function () {
+    Route::get('', 'HeroClassController@list');
+    Route::get('herorace/{id}', 'HeroClassController@findByRace');
+});
+
+Route::group(['prefix' => 'weapon'], function () {
+    Route::get('', 'WeaponController@list');
+    Route::get('heroclass/{id}', 'WeaponController@findByClass');
+});
+
 Route::group(['prefix' => 'monster'], function () {
     Route::get('', 'MonsterController@list');
     Route::get('random', 'MonsterController@random');
@@ -39,4 +53,13 @@ Route::group(['prefix' => 'monster'], function () {
     Route::post('', 'MonsterController@create');
     Route::delete('{id}', 'MonsterController@delete');
     Route::put('{id}', 'MonsterController@edit');
+});
+
+Route::group(['prefix' => 'monsterrace'], function () {
+    Route::get('', 'MonsterRaceController@list');
+});
+
+Route::group(['prefix' => 'monsterability'], function () {
+    Route::get('', 'MonsterAbilityController@list');
+    Route::get('monsterrace/{id}', 'MonsterAbilityController@findByRace');
 });
