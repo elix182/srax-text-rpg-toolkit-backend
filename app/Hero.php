@@ -18,14 +18,14 @@ class Hero extends Model
     //'race', 'class', 'weapon',
 
     public function race(){
-        return $this->hasOne(HeroRace::class, 'hero_race_id');
+        return $this->belongsTo(HeroRace::class, 'hero_race_id');
     }
 
     public function heroClass(){
-        return $this->hasOne(HeroClass::class, 'hero_class_id');
+        return $this->belongsTo(HeroClass::class, 'hero_class_id');
     }
 
     public function weapon(){
-        return $this->hasOne(Weapon::class, 'weapon_id');
+        return $this->belongsTo(Weapon::class, 'weapon_id');
     }
 }

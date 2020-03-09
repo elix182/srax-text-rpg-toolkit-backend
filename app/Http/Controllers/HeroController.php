@@ -54,7 +54,7 @@ class HeroController extends Controller
     }
 
     public function list(){
-        $heroes = Hero::all();
+        $heroes = Hero::with('race')->with('heroClass')->with('weapon')->get();
         if($heroes->isEmpty()){
             return response()->json([ 'message' => "There aren't any Heroes registered"]);
         }
@@ -172,7 +172,7 @@ class HeroController extends Controller
         if($hero == null){
             return response()->json(['message'=>"Hero not found with id $id"], 404);
         }
-        return response()->json($hero);
+        return response()->json($hero->with('race')->with('heroClass')->with('weapon')->get());
     }
 
     public function edit(Int $id, Request $request){
