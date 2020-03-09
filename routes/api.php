@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'hero'], function () {
     Route::get('', 'HeroController@list');
     Route::get('random', 'HeroController@random');
+    Route::get('dashboard', 'HeroController@dashboard');
     Route::get('{id}', 'HeroController@find');
     Route::post('', 'HeroController@create');
     Route::delete('{id}', 'HeroController@delete');
@@ -30,11 +31,35 @@ Route::group(['prefix' => 'hero'], function () {
     });
 });
 
+Route::group(['prefix' => 'herorace'], function () {
+    Route::get('', 'HeroRaceController@list');
+});
+
+Route::group(['prefix' => 'heroclass'], function () {
+    Route::get('', 'HeroClassController@list');
+    Route::get('herorace/{id}', 'HeroClassController@findByRace');
+});
+
+Route::group(['prefix' => 'weapon'], function () {
+    Route::get('', 'WeaponController@list');
+    Route::get('heroclass/{id}', 'WeaponController@findByClass');
+});
+
 Route::group(['prefix' => 'monster'], function () {
     Route::get('', 'MonsterController@list');
     Route::get('random', 'MonsterController@random');
+    Route::get('dashboard', 'MonsterController@dashboard');
     Route::get('{id}', 'MonsterController@find');
     Route::post('', 'MonsterController@create');
     Route::delete('{id}', 'MonsterController@delete');
     Route::put('{id}', 'MonsterController@edit');
+});
+
+Route::group(['prefix' => 'monsterrace'], function () {
+    Route::get('', 'MonsterRaceController@list');
+});
+
+Route::group(['prefix' => 'monsterability'], function () {
+    Route::get('', 'MonsterAbilityController@list');
+    Route::get('monsterrace/{id}', 'MonsterAbilityController@findByRace');
 });

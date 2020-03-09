@@ -13,6 +13,36 @@ use App\Services\MonsterService;
 
 class MonsterController extends Controller
 {
+    public function dashboard(){
+        $monsters = Monster::all();
+        $races = MonsterRace::all();
+        $abilities = MonsterAbility::all();
+        $mostPopularRace = null;
+        $mostPopularAbility = null;
+        $mostPopular = 0;
+        foreach($races as $race){
+            $count = $race->knownMonsters()->count();
+            if($count > $mostPopular){
+                $mostPopularRace = $race;
+                $mostPopular = $count;
+            }
+        }
+        $mostPopular = 0;
+        foreach($abilities as $ability){
+            $count = $ability->knownMonsters()->count();
+            if($count > $mostPopular){
+                $mostPopularAbility = $ability;
+                $mostPopular = $count;
+            }
+        }
+        $result = [
+            'available' => $monsters->count(),
+            'mostPopularRace' => $mostPopularRace,
+            'mostPopularAbility' => $mostPopularAbility,
+        ];
+        return response()->json($result);
+    }
+
     public function list(){
         $monsters = Monster::all();
         if($monsters->isEmpty()){

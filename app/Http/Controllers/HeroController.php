@@ -12,6 +12,47 @@ use App\Weapon;
 
 class HeroController extends Controller
 {
+    public function dashboard(){
+        $heroes = Hero::all();
+        $races = HeroRace::all();
+        $classes = HeroClass::all();
+        $weapons = Weapon::all();
+        $mostPopularRace = null;
+        $mostPopularClass = null;
+        $mostPopularWeapon = null;
+        $mostPopular = 0;
+        foreach($races as $race){
+            $count = $race->knownHeroes()->count();
+            if($count > $mostPopular){
+                $mostPopularRace = $race;
+                $mostPopular = $count;
+            }
+        }
+        $mostPopular = 0;
+        foreach($classes as $class){
+            $count = $class->knownHeroes()->count();
+            if($count > $mostPopular){
+                $mostPopularClass = $class;
+                $mostPopular = $count;
+            }
+        }
+        $mostPopular = 0;
+        foreach($weapons as $weapon){
+            $count = $weapon->knownHeroes()->count();
+            if($count > $mostPopular){
+                $mostPopularWeapon = $weapon;
+                $mostPopular = $count;
+            }
+        }
+        $result = [
+            'available' => $heroes->count(),
+            'mostPopularRace' => $mostPopularRace,
+            'mostPopularClass' => $mostPopularClass,
+            'mostPopularWeapon' => $mostPopularWeapon,
+        ];
+        return response()->json($result);
+    }
+
     public function list(){
         $heroes = Hero::all();
         if($heroes->isEmpty()){

@@ -14,4 +14,8 @@ class HeroRace extends Model
     public function availableClasses(){
         return $this->belongsToMany(HeroClass::class);
     }
+
+    public function knownHeroes(){
+        return $this->hasMany(Hero::class);
+    }
 }

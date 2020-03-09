@@ -13,4 +13,8 @@ class HeroClass extends Model
     public function availableWeapons(){
         return $this->belongsToMany(Weapon::class);
     }
+
+    public function knownHeroes(){
+        return $this->hasMany(Hero::class);
+    }
 }
