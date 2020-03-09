@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'hero'], function () {
     Route::get('', 'HeroController@list');
     Route::get('random', 'HeroController@random');
+    Route::get('dashboard', 'HeroController@dashboard');
     Route::get('{id}', 'HeroController@find');
     Route::post('', 'HeroController@create');
     Route::delete('{id}', 'HeroController@delete');
@@ -33,6 +34,7 @@ Route::group(['prefix' => 'hero'], function () {
 Route::group(['prefix' => 'monster'], function () {
     Route::get('', 'MonsterController@list');
     Route::get('random', 'MonsterController@random');
+    Route::get('dashboard', 'MonsterController@dashboard');
     Route::get('{id}', 'MonsterController@find');
     Route::post('', 'MonsterController@create');
     Route::delete('{id}', 'MonsterController@delete');
