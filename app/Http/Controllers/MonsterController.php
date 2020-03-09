@@ -52,6 +52,7 @@ class MonsterController extends Controller
         }
         // Check if te selected abilities are valid and fetch the abilities entities from the DB
         $abilities = [];
+        $usedAbIds = []; // Array for storing the ID of the abilities already fetched
         foreach($request->abilities as $abilityId){
             $ability = MonsterAbility::find($abilityId);
             if($ability == null){
@@ -60,7 +61,10 @@ class MonsterController extends Controller
             if($race->availableAbilities()->find($abilityId) == null){
                 return response()->json(["message" => "A $race->name can't use $ability->name"], 400);
             }
-            $abilities[] = $ability;
+            if(!in_array($ability->id, $usedAbIds)){
+                $abilities[] = $ability;
+                $usedAbIds[] = $ability->id;
+            }
         }
         //Finally check if the data is valid
         if($request->str <= 0 || $request->str > 100){
@@ -104,6 +108,72 @@ class MonsterController extends Controller
     }
 
     public function edit(Int $id, Request $request){
+        $monster = Monster::find($id);
+        if($monster == null){
+            return response()->json(['message'=>"Monster not found with id $id"], 404);
+        }
+        $validator = Validator::make($request->all(),
+        [
+            'name' => 'required|string',
+            'raceId' => 'required|integer',
+            'abilities' => 'present|array',
+            'str' => 'required|integer',
+            'dex' => 'required|integer',
+            'int' => 'required|integer',
+            'picture' => 'required|string',
+        ]);
+        if($validator->fails()){
+            return response()->json(["message" => "The monster request lacks data"], 400);
+        }
+        //Check if the selected data exists
+        $race = MonsterRace::find($request->raceId);
+        if($race == null){
+            return response()->json(["message" => "Monster Race not found"], 404);
+        }
+        // Check if te selected abilities are valid and fetch the abilities entities from the DB
+        $abilities = [];
+        $usedAbIds = []; // Array for storing the ID of the abilities already fetched
+        foreach($request->abilities as $abilityId){
+            $ability = MonsterAbility::find($abilityId);
+            if($ability == null){
+                return response()->json(['message' => 'Monster ability not found'], 404);
+            }
+            if($race->availableAbilities()->find($abilityId) == null){
+                return response()->json(["message" => "A $race->name can't use $ability->name"], 400);
+            }
+            if(!in_array($ability->id, $usedAbIds)){
+                $abilities[] = $ability;
+                $usedAbIds[] = $ability->id;
+            }
+        }
+        //Finally check if the data is valid
+        if($request->str <= 0 || $request->str > 100){
+            return response()->json(["message" => "STR cannot be lower or equal than 0 or greater than 100"], 400);
+        }
+        if($request->dex <= 0 || $request->dex > 100){
+            return response()->json(["message" => "DEX cannot be lower or equal than 0 or greater than 100"], 400);
+        }
+        if($request->int <= 0 || $request->int > 100){
+            return response()->json(["message" => "INT cannot be lower or equal than 0 or greater than 100"], 400);
+        }
+        if(count($abilities) == 0){
+            return response()->json(["message" => "Your monster needs at least 1 ability"], 400);
+        }
+        //Actual creation of the monster with initial state
+        $level = (count($abilities) * 2) - 1;
+        $monster->name = $request->name;
+        $monster->str = $request->str;
+        $monster->dex = $request->dex;
+        $monster->int = $request->int;
+        $monster->picture = $request->picture;
+        $monster->monster_race_id = $race->id;
+        $monster->level = $level;
+        $monster->abilities()->sync([]); //clear the old abilities
+        foreach($abilities as $ability){
+            $monster->abilities()->save($ability);
+        }
+        $monster->save();
 
+        return response()->json(["message" => "$race->name $monster->name level $level updated successfully"]);
     }
 }
