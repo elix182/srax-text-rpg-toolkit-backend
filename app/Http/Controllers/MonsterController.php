@@ -34,7 +34,12 @@ class MonsterController extends Controller
     }
 
     public function delete(Int $id){
-
+        $monster = Monster::find($id);
+        if($monster == null){
+            return response()->json(['message'=>"Monster not found with id $id"], 404);
+        }
+        $monster->delete();
+        return response()->json(['message' => $monster->name." deleted successfully"]);
     }
 
     public function edit(Int $id, Request $request){
