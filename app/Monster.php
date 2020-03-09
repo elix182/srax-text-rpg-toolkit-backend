@@ -16,7 +16,7 @@ class Monster extends Model
     ];
 
     public function race(){
-        return $this->hasOne(MonsterRace::class, 'monster_race_id');
+        return $this->belongsTo(MonsterRace::class, 'monster_race_id');
     }
 
     public function abilities(){

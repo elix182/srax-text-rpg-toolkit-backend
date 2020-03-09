@@ -44,7 +44,7 @@ class MonsterController extends Controller
     }
 
     public function list(){
-        $monsters = Monster::all();
+        $monsters = Monster::with('race')->with('abilities')->get();
         if($monsters->isEmpty()){
             return response()->json(['message'=>"There aren't any Monsters registered"], 404);
         }
@@ -73,7 +73,7 @@ class MonsterController extends Controller
         if($monster == null){
             return response()->json(['message'=>"Monster not found with id $id"], 404);
         }
-        return response()->json($monster);
+        return response()->json($monster->with('race')->with('abilities')->get());
     }
 
     public function create(Request $request){
