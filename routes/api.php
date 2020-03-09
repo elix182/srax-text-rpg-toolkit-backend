@@ -29,3 +29,12 @@ Route::group(['prefix' => 'hero'], function () {
     Route::middleware('auth:api')->group(function () {
     });
 });
+
+Route::group(['prefix' => 'monster'], function () {
+    Route::get('', 'MonsterController@list');
+    Route::get('random', 'MonsterController@random');
+    Route::get('{id}', 'MonsterController@find');
+    Route::post('', 'MonsterController@create');
+    Route::delete('{id}', 'MonsterController@delete');
+    Route::put('{id}', 'MonsterController@edit');
+});
