@@ -86,6 +86,29 @@ class MonsterService
   }
     
   public function generateRandomPicture(){
-    return "[]";
+    $yellow = '#FFFF00';
+    $red = '#CC0000';
+    $black = '#000000';
+    $white = '#FFFFFF';
+    $pixels = array_fill(0, 8, array_fill(0, 8, ''));
+    for($j = 0; $j < 8; $j++){
+      for($i = 0; $i < 8; $i++){
+        $bw = rand(0,1);
+        $pixels[$i][$j] = $bw? $black : $white;
+      }
+    }
+    $eyes = rand(1, 5);
+    $mouths = rand(1, 5);
+    for($i = 0; $i < $eyes; $i++){
+      $x = rand(0,7);
+      $y = rand(0,7);
+      $pixels[$x][$y] = $yellow;
+    }
+    for($i = 0; $i < $mouths; $i++){
+      $x = rand(0,7);
+      $y = rand(0,7);
+      $pixels[$x][$y] = $red;
+    }
+    return json_encode($pixels);
   }
 }
