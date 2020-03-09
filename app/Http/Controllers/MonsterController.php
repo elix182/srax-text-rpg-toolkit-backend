@@ -9,6 +9,8 @@ use App\Monster;
 use App\MonsterRace;
 use App\MonsterAbility;
 
+use App\Services\MonsterService;
+
 class MonsterController extends Controller
 {
     public function list(){
@@ -20,7 +22,20 @@ class MonsterController extends Controller
     }
 
     public function random(){
-
+        $service = new MonsterService();
+        $race = MonsterRace::all()->random();
+        $availableAbilities = $race->availableAbilities();
+        $randomTake = rand(1, $availableAbilities->count());
+        $abilities = $availableAbilities->inRandomOrder()->take($randomTake)->get();
+        $name = $service->generateRandomName($race->name);
+        $picture = $service->generateRandomPicture();
+        $result = [
+            'name' => $name,
+            'race' => $race,
+            'abilities' => $abilities,
+            'picture' => $picture
+        ];
+        return response()->json($result);
     }
 
     public function find(Int $id){
